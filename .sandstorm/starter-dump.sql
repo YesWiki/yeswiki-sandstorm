@@ -1,3 +1,5 @@
+CREATE DATABASE yeswiki;
+USE yeswiki;
 -- MySQL dump 10.13  Distrib 5.5.46, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: yeswiki

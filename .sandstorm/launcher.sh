@@ -14,13 +14,10 @@ mkdir -p /var/run
 mkdir -p /var/run/mysqld
 
 # move storage folders which must be writable to /var
-mkdir -p /var/storage
-mv /opt/app/cache /var/storage/cache
-ln -s /var/storage/cache /opt/app/cache
-mv /opt/app/files /var/storage/files
-ln -s /var/storage/files /opt/app/files
-mv /opt/app/themes /var/storage/themes
-ln -s /var/storage/themes /opt/app/themes
+mkdir -p /var/yeswiki
+cp -a /opt/app/cache.dist /var/yeswiki/cache
+cp -a /opt/app/files.dist /var/yeswiki/files
+
 
 # Ensure mysql tables created
 HOME=/etc/mysql /usr/bin/mysql_install_db --force

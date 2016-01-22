@@ -4,7 +4,7 @@ set -euo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y nginx php5-fpm php5-mysql php5-cli php5-curl git php5-dev mysql-server
+apt-get install -y nginx php5-fpm php5-gd php5-mysql php5-cli php5-curl git php5-dev mysql-server
 unlink /etc/nginx/sites-enabled/default
 cat > /etc/nginx/sites-available/sandstorm-php <<EOF
 server {
@@ -54,6 +54,13 @@ sed --in-place='' \
 sed --in-place='' \
         --expression='s/^;clear_env = no/clear_env=no/' \
         /etc/php5/fpm/pool.d/www.conf
+# patch /etc/php5/fpm/php.ini to allow backup uploads up to 100MB in Paperwork
+sed --in-place='' \
+        --expression='s/^post_max_size =.*/post_max_size = 20M/' \
+        --expression='s/^upload_max_filesize =.*/upload_max_filesize = 20M/' \
+        --expression='s/^max_execution_time =.*/max_execution_time = 300/' \
+        --expression='s/^max_input_time =.*/max_input_time = 360/' \
+        /etc/php5/fpm/php.ini
 # patch mysql conf to not change uid
 sed --in-place='' \
         --expression='s/^user\t\t= mysql/#user\t\t= mysql/' \

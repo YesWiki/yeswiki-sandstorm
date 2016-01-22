@@ -431,7 +431,6 @@ if (!class_exists('attach')) {
         public function showAsImage($fullFilename)
         {
             // Generation d'une vignette si absente ou si changement de dimension  , TODO : suupprimer ancienne vignette ?
-
             $image_redimensionnee = 0;
             if (!preg_match("/.(svg)$/i", $this->file) == 1) {
                 if ((!empty($this->height)) && (!empty($this->width))) {
@@ -439,6 +438,7 @@ if (!class_exists('attach')) {
                     if (!file_exists($image_dest = $this->calculer_nom_fichier_vignette($fullFilename, $this->width, $this->height))) {
                         $this->redimensionner_image($fullFilename, $image_dest, $this->width, $this->height);
                     }
+
                     $img_name = $image_dest;
                     if (empty($this->nofullimagelink)) {
                         $image_redimensionnee = 1;
@@ -504,7 +504,7 @@ if (!class_exists('attach')) {
         // Affiche le fichier liee comme un fichier audio
         public function showAsAudio($fullFilename)
         {
-            $output = $this->wiki->format('{{player url="' . str_replace('wakka.php?wiki=', '', $this->wiki->config['base_url']) . $fullFilename . '"}}');
+            $output = $this->wiki->format('{{player url="' . $fullFilename . '"}}');
             echo $output;
             $this->showUpdateLink();
         }
@@ -640,7 +640,6 @@ if (!class_exists('attach')) {
             switch ($_FILES['upFile']['error']) {
                 case 0:
                     $srcFile = $_FILES['upFile']['tmp_name'];
-                    var_dump($srcFile, $destFile);
                     if (move_uploaded_file($srcFile, $destFile)) {
                         chmod($destFile, 0644);
                         header("Location: " . $this->wiki->href("", $this->wiki->GetPageTag(), ""));
@@ -1059,6 +1058,7 @@ if (!class_exists('attach')) {
             if (!class_exists('imageTransform')) {
                 require_once 'tools/attach/libs/class.imagetransform.php';
             }
+
             $imgTrans = new imageTransform();
             $imgTrans->sourceFile = $image_src;
             $imgTrans->targetFile = $image_dest;

@@ -8,3 +8,4 @@ themes/*
 !themes/bootstrap/
 .phpintel/
 tools/wkhtmltopdf/*
+sandstorm/.vagrant
